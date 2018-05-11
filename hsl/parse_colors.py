@@ -47,7 +47,7 @@ class CSSColorParser:
     @staticmethod
     def _build_parser():
         float_or_percent = (ppc.fnumber + pp.Literal('%')('percent')) | ppc.fnumber
-        float_or_percent.addParseAction(lambda t: float(t[0]) / 100 if t.percent else t[0])
+        float_or_percent.addParseAction(lambda t: float(t[0]) / 100 if t.percent else float(t[0]))
 
         hsl_color = pp.Suppress('hsl(') + pp.delimitedList(float_or_percent) + pp.Suppress(')')
         hsl_color.addParseAction(lambda t: ('hsl', t[0] / 360, t[1], t[2]))
