@@ -38,7 +38,7 @@ def hue_to_rgb(m1, m2, h):
 def hsl_to_rgb(hsl):
     """Converts HSL colors to RGB. See
     https://www.w3.org/TR/2018/PR-css-color-3-20180315/#hsl-color. Note that
-    the range of H, S, and L is 0 to 1.
+    the ranges of H, S, and L are 0 to 1.
     """
     h, s, l = tsplit(hsl)
     m1, m2 = np.zeros_like(h), np.zeros_like(h)
