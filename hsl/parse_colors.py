@@ -80,7 +80,7 @@ class CSSColorParser:
         hex_color = pp.Suppress('#') + pp.Word(pp.hexnums)
         hex_color.addParseAction(parse_hex_color)
 
-        color = color = hex_color ^ rgb_color ^ rgba_color ^ hsl_color ^ hsla_color
+        color = hex_color ^ rgb_color ^ rgba_color ^ hsl_color ^ hsla_color
         return color
 
     def parse(self, s):
