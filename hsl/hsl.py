@@ -56,10 +56,14 @@ def rgb_to_hsl_once(rgb, eps):
         rgb2 = hsl_to_rgb(hsl)
         return sum((rgb - rgb2)**2)
     x0 = np.array([0.5, 0.5, 0.5])
-    res = minimize(loss, x0, method='L-BFGS-B', bounds=[(0, 1)] * 3,
-                   options={'ftol': eps**2})
-    hsl = res.x
-    min_loss = loss(hsl)
+    for _ in range(10):
+        res = minimize(loss, x0, method='L-BFGS-B', bounds=[(0, 1)] * 3,
+                       options={'ftol': eps**2})
+        hsl = res.x
+        min_loss = loss(hsl)
+        if min_loss <= eps:
+            break
+        x0[:] = np.random.uniform(size=x0.shape)
     if min_loss > eps:
         warnings.warn(f'min_loss {min_loss:.3e} > {eps:.3e}')
     if hsl[2] < eps or hsl[2] > 1 - eps:
