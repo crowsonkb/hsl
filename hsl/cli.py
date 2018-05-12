@@ -31,7 +31,9 @@ def main():
             out = getattr(color, 'as_' + args.t)()
             print(out)
         except ParseBaseException as err:
-            print(f'{err.__class__.__name__}: {err}', file=sys.stderr)
+            bold_red = '\033[1;31m'
+            reset = '\033[0m'
+            print(f'{bold_red}{err.__class__.__name__}{reset}: {err}', file=sys.stderr)
             continue
         except (EOFError, KeyboardInterrupt):
             break
