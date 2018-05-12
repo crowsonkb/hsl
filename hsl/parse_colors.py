@@ -44,6 +44,14 @@ class CSSColor:
         return f'rgba({r * 100:.1f}%, {g * 100:.1f}%, {b * 100:.1f}%, {a:.1f})'
 
 
+class Value:
+    def __init__(self, value, percent=False):
+        self.value = float(value)
+        self.percent = percent
+        if percent:
+            self.value /= 100
+
+
 class CSSColorParser:
     def __init__(self):
         self.parser = self._build_parser()
@@ -51,25 +59,23 @@ class CSSColorParser:
 
     @staticmethod
     def _build_parser():
-        def parse_float_or_percent(t):
-            v = float(t[0])
-            if t.percent:
-                return v / 100
-            return v
-
         float_or_percent = (ppc.fnumber + pp.Literal('%')('percent')) | ppc.fnumber
-        float_or_percent.addParseAction(parse_float_or_percent)
+        float_or_percent.addParseAction(lambda t: Value(t[0], t.percent))
 
         def parse_list(space, n, t):
             if len(t) != n:
                 raise pp.ParseFatalException('Invalid number of values in list.')
             if space == 'hsl':
-                t[0] /= 360
+                t[0].value /= 360
             elif space == 'rgb':
-                t[0] /= 255
-                t[1] /= 255
-                t[2] /= 255
-            return CSSColor(space, *t)
+                if not t[0].percent:
+                    t[0].value /= 255
+                if not t[1].percent:
+                    t[1].value /= 255
+                if not t[2].percent:
+                    t[2].value /= 255
+            values = [x.value for x in t]
+            return CSSColor(space, *values)
 
         hsl_color = pp.Suppress('hsl(') + pp.delimitedList(float_or_percent) + pp.Suppress(')')
         hsl_color.addParseAction(partial(parse_list, 'hsl', 3))
