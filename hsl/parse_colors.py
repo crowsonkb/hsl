@@ -65,6 +65,10 @@ class CSSColorParser:
                 raise pp.ParseFatalException('Invalid number of values in list.')
             if space == 'hsl':
                 t[0] /= 360
+            elif space == 'rgb':
+                t[0] /= 255
+                t[1] /= 255
+                t[2] /= 255
             return CSSColor(space, *t)
 
         hsl_color = pp.Suppress('hsl(') + pp.delimitedList(float_or_percent) + pp.Suppress(')')
