@@ -47,6 +47,7 @@ class CSSColor:
 class CSSColorParser:
     def __init__(self):
         self.parser = self._build_parser()
+        self.parser.enablePackrat()
 
     @staticmethod
     def _build_parser():
@@ -64,7 +65,7 @@ class CSSColorParser:
                 raise pp.ParseFatalException('Invalid number of values in list.')
             if space == 'hsl':
                 t[0] /= 360
-            return (space,) + tuple(t)
+            return CSSColor(space, *t)
 
         hsl_color = pp.Suppress('hsl(') + pp.delimitedList(float_or_percent) + pp.Suppress(')')
         hsl_color.addParseAction(partial(parse_list, 'hsl', 3))
@@ -81,15 +82,15 @@ class CSSColorParser:
             if len(s) not in (3, 4, 6, 8):
                 return pp.ParseFatalException('Invalid number of hex characters.')
             if len(s) in (3, 4):
-                return ('rgb',) + tuple(int(ch+ch, 16) / 255 for ch in t[0])
+                return CSSColor('rgb', *(int(ch+ch, 16) / 255 for ch in t[0]))
             if len(s) in (6, 8):
                 r = int(s[0:2], 16) / 255
                 g = int(s[2:4], 16) / 255
                 b = int(s[4:6], 16) / 255
             if len(s) == 8:
                 a = int(s[6:8], 16) / 255
-                return 'rgb', r, g, b, a
-            return 'rgb', r, g, b
+                return CSSColor('rgb', r, g, b, a)
+            return CSSColor('rgb', r, g, b)
 
         hex_color = pp.Suppress('#') + pp.Word(pp.hexnums)
         hex_color.addParseAction(parse_hex_color)
@@ -98,5 +99,4 @@ class CSSColorParser:
         return color
 
     def parse(self, s):
-        result = self.parser.parseString(s, parseAll=True)[0]
-        return CSSColor(*result)
+        return self.parser.parseString(s, parseAll=True)[0]
