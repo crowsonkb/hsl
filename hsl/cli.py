@@ -3,6 +3,7 @@
 """Converts colors from HSL (as specified in CSS) to RGB and back."""
 
 import argparse
+import readline
 import sys
 
 from hsl import CSSColorParser, ParseBaseException
