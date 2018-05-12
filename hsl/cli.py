@@ -30,8 +30,7 @@ def main():
             out = getattr(color, 'as_' + args.t)()
             print(out)
         except ParseBaseException as err:
-            # print(f'{err.__class__.__name__}: {err}', file=sys.stderr)
-            sys.excepthook(err)
+            print(f'{err.__class__.__name__}: {err}', file=sys.stderr)
             continue
         except (EOFError, KeyboardInterrupt):
             break
