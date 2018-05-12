@@ -24,18 +24,17 @@ def main():
     args = ap.parse_args()
 
     p = CSSColorParser()
-    try:
-        while True:
-            try:
-                color = p.parse(input())
-                out = getattr(color, 'as_' + args.t)()
-                print(out)
-            except ParseBaseException as err:
-                # print(f'{err.__class__.__name__}: {err}', file=sys.stderr)
-                sys.excepthook(err)
-                continue
-    except (EOFError, KeyboardInterrupt):
-        pass
+    while True:
+        try:
+            color = p.parse(input())
+            out = getattr(color, 'as_' + args.t)()
+            print(out)
+        except ParseBaseException as err:
+            # print(f'{err.__class__.__name__}: {err}', file=sys.stderr)
+            sys.excepthook(err)
+            continue
+        except (EOFError, KeyboardInterrupt):
+            break
 
 
 if __name__ == '__main__':
