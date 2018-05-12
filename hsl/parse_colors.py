@@ -1,7 +1,7 @@
 from functools import partial
 
 import pyparsing as pp
-from pyparsing import pyparsing_common as ppc
+from pyparsing import ParseBaseException, pyparsing_common as ppc
 
 from hsl import hsl_to_rgb, rgb_to_hsl
 
