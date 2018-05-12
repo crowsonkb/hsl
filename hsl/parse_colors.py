@@ -1,3 +1,5 @@
+"""Parses and pretty-prints CSS colors."""
+
 from functools import partial
 
 import pyparsing as pp
