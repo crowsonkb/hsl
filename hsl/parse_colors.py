@@ -26,7 +26,7 @@ class CSSColor:
         if self.space == 'rgb':
             h, s, l = rgb_to_hsl(self.value[:3])
         a = self.value[3]
-        return f'hsla({h * 360:.1f}, {s * 100:.1f}%, {l * 100:.1f}%, {a * 100:.1f}%)'
+        return f'hsla({h * 360:.1f}, {s * 100:.1f}%, {l * 100:.1f}%, {a:.1f})'
 
     def as_rgb(self):
         if self.space == 'rgb':
@@ -41,7 +41,7 @@ class CSSColor:
         if self.space == 'hsl':
             r, g, b = hsl_to_rgb(self.value[:3])
         a = self.value[3]
-        return f'rgba({r * 100:.1f}%, {g * 100:.1f}%, {b * 100:.1f}%, {a * 100:.1f}%)'
+        return f'rgba({r * 100:.1f}%, {g * 100:.1f}%, {b * 100:.1f}%, {a:.1f})'
 
 
 class CSSColorParser:
