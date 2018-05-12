@@ -8,8 +8,9 @@ setup(name='hsl',
       author_email='crowsonkb@gmail.com',
       license='MIT',
       packages=['hsl'],
-      include_package_data=True,
-      zip_safe=False,
+      install_requires=['numpy >= 1.14.3',
+                        'pyparsing >= 2.2.0',
+                        'scipy >= 1.1.0',],
       entry_points={
           'console_scripts': ['hslconvert=hsl.cli:main'],
       })
